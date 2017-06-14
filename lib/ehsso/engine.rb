@@ -1,5 +1,4 @@
-require "rails/engine"
-require "rest-client"
+require 'rails/engine'
 
 module Cmssso
   class Engine < ::Rails::Engine

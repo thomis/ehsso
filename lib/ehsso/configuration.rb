@@ -2,13 +2,13 @@ module Ehsso
 
   class Configuration
     attr_accessor :module_key
-    attr_accessor :base_uri
-    attr_accessor :proxy
+    attr_accessor :base_url
+    attr_accessor :username_and_password
 
     def initialize
-      @proxy       = nil
-      @module_key  = ""
-      @base_uri    = ""
+      @module_key            = ''
+      @base_url              = ''
+      @username_and_password = nil
     end
   end
 

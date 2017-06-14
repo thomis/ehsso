@@ -24,7 +24,8 @@ Ehsso.configure do |config|
   config.module_key = 'my_module_key'
 
   # Service Endpoint
-  config.base_uri   = "http://{host}:{port}"
+  config.base_url   = 'http://{host}:{port}'
+  config.username_and_password = 'username:password'
 end
 ```
 
@@ -34,4 +35,4 @@ to do....
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ehsso.
+Bug reports and pull requests are welcome on GitHub at https://github.com/thomis/ehsso.
