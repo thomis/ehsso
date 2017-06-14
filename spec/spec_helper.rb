@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "ehsso"
+require_relative '../app/models/person'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
