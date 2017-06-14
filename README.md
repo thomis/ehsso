@@ -1,3 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/ehsso.svg)](https://badge.fury.io/rb/ehsso)
+
+[![Dependency Status](https://gemnasium.com/badges/github.com/thomis/ehsso.svg)](https://gemnasium.com/github.com/thomis/ehsso)
+
 # ehsso
 
 Company specific Single Sign On for Rails applications.
