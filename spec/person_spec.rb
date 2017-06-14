@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Ehsso::Person do
-  it "is creatable" do
+  it 'is creatable' do
     person = Ehsso::Person.new(id: 0, reference: '123', first_name: 'first_name', last_name: 'last_name', email: 'first_name.last_name@company.tld')
 
     expect(person.id).to eq(0)
@@ -20,7 +20,18 @@ RSpec.describe Ehsso::Person do
     expect(person.first_name).to eq(nil)
     expect(person.last_name).to eq(nil)
     expect(person.email).to eq(nil)
-    expect(person.full_name).to eq('')
+    expect(person.full_name).to eq(nil)
+  end
+
+  it 'creates a person with reference only' do
+    person = Ehsso::Person.new(reference: 'federro1')
+
+    expect(person.id).to eq(nil)
+    expect(person.reference).to eq('federro1')
+    expect(person.first_name).to eq(nil)
+    expect(person.last_name).to eq(nil)
+    expect(person.email).to eq(nil)
+    expect(person.full_name).to eq(nil)
   end
 
 end

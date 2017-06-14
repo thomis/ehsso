@@ -21,8 +21,21 @@ module Ehsso
     # end
 
     def full_name
-      [self.last_name,self.first_name].compact.join(" ")
+      return nil if self.last_name.nil? && self.first_name.nil?
+      [self.last_name, self.first_name].compact.join(" ")
     end
+
+    def self.parse_from_request_header(header={})
+      return nil unless header.is_a?(Hash)
+
+      person = Ehsso::Person.new()
+
+
+      return person
+    end
+
+
+
   end
 
 end
