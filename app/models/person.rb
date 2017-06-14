@@ -54,18 +54,11 @@ module Ehsso
     end
 
     def fetch
-      url = [Ehsso.configuration.base_url, 'people'].join('/')
-      userpwd = Ehsso.configuration.username_and_password
-      response = Typhoeus.post(url, body: payload(action: 'people.modules.roles'), userpwd: userpwd)
-      handle_response(response)
+      handle_service_call(action: 'people.modules.roles')
     end
 
-
     def fetch_or_create
-      url = [Ehsso.configuration.base_url, 'people'].join('/')
-      userpwd = Ehsso.configuration.username_and_password
-      response = Typhoeus.post(url, body: payload(action: 'people_with_guest_registration_if_missing.modules.roles'), userpwd: userpwd)
-      handle_response(response)
+      handle_service_call(action: 'people_with_guest_registration_if_missing.modules.roles')
     end
 
     private
@@ -88,6 +81,13 @@ module Ehsso
           }
         ]
       }
+    end
+
+    def handle_service_call(args={})
+      url = [Ehsso.configuration.base_url, 'people'].join('/')
+      userpwd = Ehsso.configuration.username_and_password
+      response = Typhoeus.post(url, body: payload(action: args[:action]), userpwd: userpwd)
+      handle_response(response)
     end
 
     def handle_response(response)
