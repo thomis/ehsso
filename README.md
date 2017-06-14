@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/ehsso.svg)](https://badge.fury.io/rb/ehsso)
-
+[![Code Climate](https://codeclimate.com/github/thomis/ehsso/badges/gpa.svg)](https://codeclimate.com/github/thomis/ehsso)
 [![Dependency Status](https://gemnasium.com/badges/github.com/thomis/ehsso.svg)](https://gemnasium.com/github.com/thomis/ehsso)
 
 # ehsso
