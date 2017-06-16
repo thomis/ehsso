@@ -7,6 +7,9 @@ module Ehsso
     attr_accessor :first_name
     attr_accessor :last_name
     attr_accessor :email
+    attr_accessor :module_key
+    attr_accessor :module_name
+    attr_accessor :roles
 
     attr_reader   :last_error_message
 
@@ -18,14 +21,20 @@ module Ehsso
       @email            = args[:email]
 
       # for this purpose we deal with only one module
-      @module_key       = nil
-      @module_name      = nil
-      @roles            = []
+      @module_key       = args[:module_key]
+      @module_name      = args[:module_name]
+      @roles            = args[:roles].is_a?(Array) ? args[:roles] : []
     end
 
-    # def method_missing(method)
-    #   @roles.include?(method[0..-2].to_sym)
-    # end
+    def valid?
+      @last_error_message.nil?
+    end
+
+    # you can use methods like guest?, user?, operator?, administrator? etc.
+    def method_missing(method)
+      raise "Method [#{method}] not defined or allowed" unless method[-1] == '?'
+      @roles.include?(method[0..-2].upcase)
+    end
 
     def full_name
       return nil if self.last_name.nil? && self.first_name.nil?
@@ -41,14 +50,13 @@ module Ehsso
       return nil if header['HTTP_NIBR521'].nil? || header['HTTP_NIBR521'].size == 0
       person.reference = header['HTTP_NIBR521'].downcase
 
-      # first name
-      person.first_name = header['HTTP_NIBRFIRST'] if header['HTTP_NIBRFIRST'] && header['HTTP_NIBRFIRST'].strip.size > 0
-
-      # last name
-      person.last_name = header['HTTP_NIBRLAST'] if header["HTTP_NIBRLAST"] && header['HTTP_NIBRFIRST'].strip.size > 0
-
-      # email
-      person.email = header['HTTP_NIBREMAIL'].downcase if header['HTTP_NIBREMAIL'] && header['HTTP_NIBREMAIL'].strip.size > 0
+      [
+        [:first_name=, 'HTTP_NIBRFIRST'],
+        [:last_name=, 'HTTP_NIBRLAST'],
+        [:email=, 'HTTP_NIBREMAIL']
+      ].each do |method, key|
+        person.send(method, header[key]) if header[key] && header[key].strip.size > 0
+      end
 
       return person
     end
@@ -86,7 +94,11 @@ module Ehsso
     def handle_service_call(args={})
       url = [Ehsso.configuration.base_url, 'people'].join('/')
       userpwd = Ehsso.configuration.username_and_password
-      response = Typhoeus.post(url, body: payload(action: args[:action]), userpwd: userpwd)
+
+      # allows to mock class for rspec
+      service_class = args[:service_class] || Typhoeus
+
+      response = service_class.post(url, body: payload(action: args[:action]), userpwd: userpwd)
       handle_response(response)
     end
 
@@ -96,28 +108,28 @@ module Ehsso
           data = JSON.parse(response.body)
 
           item = data['response'][0]
-          self.id = item['id']
-          self.reference = item['reference']
-          self.first_name = item['first_name']
-          self.last_name = item['last_name']
-          self.email = item['email']
+          @id = item['id']
+          @reference = item['reference']
+          @first_name = item['first_name']
+          @last_name = item['last_name']
+          @email = item['email']
 
           modul = item['modules'][0]
-          self.module_key = modul['reference']
-          self.module_name = modul['name']
-          self.roles = modul['roles']
-          self.last_error_message = nil
+          @module_key = modul['reference']
+          @module_name = modul['name']
+          @roles = modul['roles']
+          @last_error_message = nil
         rescue
-          self.last_error_message = "Unable to parse servcie response data"
+          @last_error_message = "Unable to parse service response data"
         end
       else
         # something went wrong
         begin
           # try to parse the body to get valid error message
           data = JSON.parse(response.body)
-          self.last_error_message = data['response_message']
+          @last_error_message = data['response_message']
         rescue
-          self.last_error_message = "#{response.request.url}: [#{response.code}] #{response.return_message}"
+          @last_error_message = "#{response.request.url}: [#{response.code}] #{response.return_message}"
         end
       end
     end

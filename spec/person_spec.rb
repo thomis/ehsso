@@ -103,4 +103,86 @@ RSpec.describe Ehsso::Person do
     end
   end
 
+  context 'service call' do
+    before(:context) do
+      Ehsso.configure do |config|
+        # Application reference
+        config.module_key = 'my_module_key'
+
+        # Service Endpoint
+        config.base_url   = "http://localhost:9999"
+        config.username_and_password = "hello:world"
+      end
+
+    end
+
+    it 'fails with fetch to invalid endpoint' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.fetch
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq("http://localhost:9999/people: [0] Couldn't connect to server")
+    end
+
+    it 'fails with fetch_or_create to invalid endpoint' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.fetch
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq("http://localhost:9999/people: [0] Couldn't connect to server")
+    end
+
+    it 'handles a valid service call' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.send(:handle_service_call, { action: 'people.modules.roles', service_class: ServiceOk })
+
+      expect(person.valid?).to eq(true)
+      expect(person.first_name).to eq('Roger')
+      expect(person.last_name).to eq('Federer')
+      expect(person.email).to eq('roger.federer@tennis.ch')
+      expect(person.guest?).to eq(true)
+      expect(person.user?).to eq(true)
+      expect(person.operator?).to eq(true)
+      expect(person.administrator?).to eq(true)
+    end
+
+    it 'fails with not found person reference' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.send(:handle_service_call, { action: 'people.modules.roles', service_class: ServiceNotFound })
+
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq('person not found')
+    end
+
+    it 'fails with 200 code but invalid json' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.send(:handle_service_call, { action: 'people.modules.roles', service_class: ServiceOkJsonIssue })
+
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq('Unable to parse service response data')
+    end
+
+    it 'fails with error code and invalid json' do
+      person = Ehsso::Person.new(reference: 'federro1')
+      person.send(:handle_service_call, { action: 'people.modules.roles', service_class: Service500JsonIssue })
+
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq('https://localhost:9999/people: [500] just a simple message')
+    end
+  end
+
+  context 'roles' do
+    it 'validates roles' do
+      person = Ehsso::Person.new(roles: ['GUEST', 'USER'])
+      expect(person.guest?).to eq(true)
+      expect(person.user?).to eq(true)
+      expect(person.operator?).to eq(false)
+    end
+
+    it 'fails with invalid method' do
+      person = Ehsso::Person.new(roles: ['GUEST', 'USER'])
+      expect {
+        person.unknown
+      }.to raise_error(RuntimeError, "Method [unknown] not defined or allowed")
+    end
+  end
+
 end
