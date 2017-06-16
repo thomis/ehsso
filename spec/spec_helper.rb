@@ -1,6 +1,5 @@
 require "bundler/setup"
 require "ehsso"
-require_relative '../app/models/person'
 
 # mock service
 require_relative 'models/service_ok'
