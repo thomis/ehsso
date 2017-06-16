@@ -77,10 +77,10 @@ module Ehsso
         action: args[:action] || 'people.modules.roles',
         request: [
           {
-            reference: self.reference,
-            first_name: self.first_name,
-            last_name: self.last_name,
-            email: self.email,
+            reference: @reference,
+            first_name: @first_name,
+            last_name: @last_name,
+            email: @email,
             modules: [
               {
                 reference: args[:module_key] || Ehsso.configuration.module_key
@@ -98,7 +98,7 @@ module Ehsso
       # allows to mock class for rspec
       service_class = args[:service_class] || Typhoeus
 
-      response = service_class.post(url, body: payload(action: args[:action]), userpwd: userpwd)
+      response = service_class.post(url, body: JSON.generate(payload(action: args[:action])), userpwd: userpwd, ssl_verifypeer: false)
       handle_response(response)
     end
 
