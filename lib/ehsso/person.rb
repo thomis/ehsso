@@ -11,7 +11,7 @@ module Ehsso
     attr_accessor :module_name
     attr_accessor :roles
 
-    attr_reader   :last_error_message
+    attr_accessor   :last_error_message
 
     def initialize(args={})
       @id               = args[:id]
@@ -42,12 +42,19 @@ module Ehsso
     end
 
     def self.parse_from_request_header(header={})
-      return nil unless header.is_a?(Hash)
-
       person = Ehsso::Person.new()
 
+      unless header.is_a?(Hash)
+        person.last_error_message = "Request header argument is not a hash"
+        return person
+      end
+
       # reference (mandatory)
-      return nil if header['HTTP_NIBR521'].nil? || header['HTTP_NIBR521'].size == 0
+      if header['HTTP_NIBR521'].nil? || header['HTTP_NIBR521'].size == 0
+        person.last_error_message = "Unable to extract HTTP_NIBR* porperties from request header"
+        return person
+      end
+
       person.reference = header['HTTP_NIBR521'].downcase
 
       [

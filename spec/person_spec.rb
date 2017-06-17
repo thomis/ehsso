@@ -36,9 +36,16 @@ RSpec.describe Ehsso::Person do
 
   context 'request header' do
 
+    it 'failes to create a valid person with wrong header type' do
+      person = Ehsso::Person.parse_from_request_header('dfasf')
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq('Request header argument is not a hash')
+    end
+
     it 'fails to create a person with empty headers' do
       person = Ehsso::Person.parse_from_request_header({})
-      expect(person).to eq(nil)
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq('Unable to extract HTTP_NIBR* porperties from request header')
     end
 
     it 'creates a person with reference only' do
