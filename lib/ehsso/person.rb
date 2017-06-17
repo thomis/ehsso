@@ -44,11 +44,6 @@ module Ehsso
     def self.parse_from_request_header(header={})
       person = Ehsso::Person.new()
 
-      unless header.is_a?(Hash)
-        person.last_error_message = "Request header argument is not a hash"
-        return person
-      end
-
       # reference (mandatory)
       if header['HTTP_NIBR521'].nil? || header['HTTP_NIBR521'].size == 0
         person.last_error_message = "Unable to extract HTTP_NIBR* porperties from request header"
@@ -65,6 +60,9 @@ module Ehsso
         person.send(method, header[key]) if header[key] && header[key].strip.size > 0
       end
 
+      return person
+    rescue => e
+      person.last_error_message = e.to_s
       return person
     end
 
