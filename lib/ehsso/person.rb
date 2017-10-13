@@ -11,7 +11,7 @@ module Ehsso
     attr_accessor :module_name
     attr_accessor :roles
 
-    attr_accessor   :last_error_message
+    attr_accessor :last_error_message
 
     def initialize(args={})
       @id               = args[:id]
