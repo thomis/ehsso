@@ -7,7 +7,7 @@
 * Use of standard styel guide, linter and formatter
 * Check test coverage
 * Use of Dependabot
-* Remove support for ruby 2.5
+* Remove support for ruby 2.5 and 2.6
 
 ## 0.3.0 / 2019-02-20
 
