@@ -1,5 +1,4 @@
 class ResponseNotFound
-
   def code
     404
   end
@@ -31,11 +30,10 @@ class ResponseNotFound
       ]
     }'
   end
-
 end
 
 class ServiceNotFound
-  def self.post(url, args={})
+  def self.post(url, args = {})
     ResponseNotFound.new
   end
 end

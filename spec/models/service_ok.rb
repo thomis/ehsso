@@ -1,5 +1,4 @@
 class ResponseOk
-
   def code
     200
   end
@@ -35,11 +34,10 @@ class ResponseOk
       ]
     }'
   end
-
 end
 
 class ServiceOk
-  def self.post(url, args={})
+  def self.post(url, args = {})
     ResponseOk.new
   end
 end
