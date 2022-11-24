@@ -1,13 +1,9 @@
 # Changelog of ehsso
 
-## 0.5.0 / 2022-10-28
+## 0.4.0 / 2022-11-20
 
 * Upgrade gem dependencies
 * Add ci support for ruby 3.2
-
-## 0.4.0 / 2022-07-27
-
-* Upgrade gem dependencies
 * Switch to GitHub actions incl. workflow to push relase to rubygems
 * Use of standard style guide, linter and formatter
 * Check test coverage
