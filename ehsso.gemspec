@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.3"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.12"
-  spec.add_development_dependency "rails", "~> 6.1.6.1"
+  spec.add_development_dependency "rails", "~> 7.0.7"
   spec.add_development_dependency "standard", "~> 1.18"
   spec.add_development_dependency "simplecov", "~> 0.21"
 
