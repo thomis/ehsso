@@ -190,7 +190,7 @@ RSpec.describe Ehsso::Person do
   end
 
   context "dump/load" do
-    it "can dump and load a ruby object" do
+    it "can dump and load a Ehsso::Person object" do
       person = Ehsso::Person.new(id: 0, reference: "123", first_name: "first_name", last_name: "last_name", email: "first_name.last_name@company.tld")
       person_in_yaml = YAML.dump(person)
       person2 = YAML.safe_load(person_in_yaml, permitted_classes: [Ehsso::Person])
