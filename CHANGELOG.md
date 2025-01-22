@@ -1,5 +1,11 @@
 # Changelog of ehsso
 
+## 0.5.0 / 2025-01-22
+
+* Upgrade gem dependencies
+* Have support for ruby 3.1 up to 3.4, and drop support for 2.7 and 3.0
+* Accept 2 arguments for respond_to_missing?
+
 ## 0.4.0 / 2022-11-20
 
 * Upgrade gem dependencies

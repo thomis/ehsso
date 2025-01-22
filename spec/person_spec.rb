@@ -1,4 +1,5 @@
 require "spec_helper"
+require "yaml"
 
 RSpec.describe Ehsso::Person do
   it "is creatable" do
@@ -185,6 +186,15 @@ RSpec.describe Ehsso::Person do
       expect {
         person.unknown
       }.to raise_error(RuntimeError, "Method [unknown] not defined or allowed")
+    end
+  end
+
+  context "dump/load" do
+    it "can dump and load a Ehsso::Person object" do
+      person = Ehsso::Person.new(id: 0, reference: "123", first_name: "first_name", last_name: "last_name", email: "first_name.last_name@company.tld")
+      person_in_yaml = YAML.dump(person)
+      person2 = YAML.safe_load(person_in_yaml, permitted_classes: [Ehsso::Person])
+      expect(person2).to have_attributes(id: 0, reference: "123", first_name: "first_name", last_name: "last_name", email: "first_name.last_name@company.tld")
     end
   end
 end
