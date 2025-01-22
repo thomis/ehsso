@@ -34,7 +34,7 @@ module Ehsso
       @roles.include?(method[0..-2].upcase)
     end
 
-    def respond_to_missing?(method)
+    def respond_to_missing?(method, include_private = false)
       true if method[-1] == "?"
     end
 
