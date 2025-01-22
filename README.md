@@ -12,9 +12,8 @@ Company specific Single Sign On for Rails applications.
 Currently supported and tested ruby versions are:
 
 - 3.4
-- 3.2
+- 3.3
 - 3.1
-- 3.0
 
 ## Installation
 
