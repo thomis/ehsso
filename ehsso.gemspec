@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency("typhoeus", "~> 1.3")
   spec.add_runtime_dependency("logger", "~> 1.6.5")
-  spec.add_runtime_dependency("bigdecimal", "~> 3.1.9")
+  spec.add_runtime_dependency("bigdecimal", ">= 3.1.9", "< 3.3.0")
 end
