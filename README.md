@@ -1,6 +1,4 @@
 [![Gem Version](https://badge.fury.io/rb/ehsso.svg)](https://badge.fury.io/rb/ehsso)
-[![Maintainability](https://api.codeclimate.com/v1/badges/baea493e227c446ffe49/maintainability)](https://codeclimate.com/github/thomis/ehsso/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/baea493e227c446ffe49/test_coverage)](https://codeclimate.com/github/thomis/ehsso/test_coverage)
 [![ci](https://github.com/thomis/ehsso/actions/workflows/ci.yml/badge.svg)](https://github.com/thomis/ehsso/actions/workflows/ci.yml)
 
 # ehsso
@@ -11,10 +9,13 @@ Company specific Single Sign On for Rails applications.
 
 Currently supported and tested ruby versions are:
 
-- 3.4
-- 3.3
-- 3.2
-- 3.1
+- 3.4 (EOL 31 Mar 2028)
+- 3.3 (EOL 31 Mar 2027)
+- 3.2 (EOL 31 Mar 2026)
+
+Ruby versions not tested anymore:
+
+- 3.1 (EOL 31 Mar 2025)
 
 ## Installation
 
