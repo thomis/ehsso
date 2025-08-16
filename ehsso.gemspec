@@ -30,6 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov", "~> 0.21"
 
   spec.add_runtime_dependency("typhoeus", "~> 1.3")
-  spec.add_runtime_dependency("logger", "~> 1.6.5")
-  spec.add_runtime_dependency("bigdecimal", "~> 3.1.9")
+  spec.add_runtime_dependency("logger", "~> 1.7")
+  spec.add_runtime_dependency("bigdecimal", "~> 3.2")
 end
