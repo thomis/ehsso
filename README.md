@@ -44,7 +44,7 @@ Ehsso.configure do |config|
   # Application reference
   config.module_key = 'my_module_key'
 
-  # Authorization service endpoint
+  # Authorization service endpoint with HTTP Basic Auth
   config.base_url   = 'http://{host}:{port}'
   config.username_and_password = 'username:password'
 end
