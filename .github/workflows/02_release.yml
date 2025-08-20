@@ -1,11 +1,16 @@
-name: cd
+name: 02 - Release
 
 on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  
   workflow_dispatch:
 
 jobs:
-
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +25,7 @@ jobs:
         bundler-cache: true
         cache-version: 1
 
-    - name: Push to Rubygems
+    - name: Release to RubyGems
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |

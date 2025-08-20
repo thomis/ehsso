@@ -1,4 +1,4 @@
-name: ci
+name: 01 - Test
 
 on:
   push:
@@ -16,10 +16,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
     strategy:
       fail-fast: false
       matrix:
@@ -37,6 +35,6 @@ jobs:
         bundler-cache: true
         cache-version: 1
 
-    - name: Run default task
+    - name: Run tests
       run: |
         bundle exec rake

@@ -1,5 +1,9 @@
 # Changelog of ehsso
 
+## 0.6.0 / 2025-08-20
+
+* Upgrade gem dependencies
+
 ## 0.5.0 / 2025-01-22
 
 * Upgrade gem dependencies
