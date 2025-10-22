@@ -4,6 +4,7 @@
 
 * Fix Rails 8.1 compatibility - make Rails engine loading conditional
 * Fix Typhoeus constant resolution in Person class
+* Achieve 100% test coverage with additional specs for error handling and edge cases
 
 ## 0.6.0 / 2025-08-20
 

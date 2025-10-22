@@ -79,6 +79,14 @@ RSpec.describe Ehsso::Person do
       expect(person.email).to eq(nil)
       expect(person.full_name).to eq(nil)
     end
+
+    it "handles exceptions gracefully" do
+      # Mock a scenario that would cause an exception
+      allow_any_instance_of(String).to receive(:downcase).and_raise(StandardError, "Test error")
+      person = Ehsso::Person.parse_from_request_header("HTTP_NIBR521" => "TEST")
+      expect(person.valid?).to eq(false)
+      expect(person.last_error_message).to eq("Test error")
+    end
   end
 
   context "payload" do
@@ -129,7 +137,7 @@ RSpec.describe Ehsso::Person do
 
     it "fails with fetch_or_create to invalid endpoint" do
       person = Ehsso::Person.new(reference: "federro1")
-      person.fetch
+      person.fetch_or_create
       expect(person.valid?).to eq(false)
       expect(person.last_error_message).to eq("http://localhost:9999/people: [0] Couldn't connect to server")
     end
@@ -146,6 +154,15 @@ RSpec.describe Ehsso::Person do
       expect(person.user?).to eq(true)
       expect(person.operator?).to eq(true)
       expect(person.administrator?).to eq(true)
+    end
+
+    it "handles fetch_or_create with valid service" do
+      person = Ehsso::Person.new(reference: "federro1")
+      person.send(:handle_service_call, {action: "people_with_guest_registration_if_missing.modules.roles", service_class: ServiceOk})
+
+      expect(person.valid?).to eq(true)
+      expect(person.first_name).to eq("Roger")
+      expect(person.last_name).to eq("Federer")
     end
 
     it "fails with not found person reference" do
