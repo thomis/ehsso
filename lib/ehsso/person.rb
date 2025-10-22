@@ -1,3 +1,5 @@
+require "typhoeus"
+
 module Ehsso
   class Person
     attr_accessor :id
@@ -103,7 +105,7 @@ module Ehsso
       userpwd = Ehsso.configuration.username_and_password
 
       # allows to mock class for rspec
-      service_class = args[:service_class] || Typhoeus
+      service_class = args[:service_class] || ::Typhoeus
 
       response = service_class.post(url, body: JSON.generate(payload(action: args[:action])), userpwd: userpwd, ssl_verifypeer: false)
       handle_response(response)
