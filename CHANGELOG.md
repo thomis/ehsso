@@ -1,5 +1,9 @@
 # Changelog of ehsso
 
+## 0.7.1 / 2025-11-09
+
+* Enable Trusted Publishing
+
 ## 0.7.0 / 2025-10-22
 
 * Fix Rails 8.1 compatibility - make Rails engine loading conditional
