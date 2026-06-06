@@ -32,13 +32,11 @@ module Ehsso
 
     # you can use methods like guest?, user?, operator?, administrator? etc.
     def method_missing(method)
-      raise "Method [#{method}] not defined or allowed" unless method[-1] == "?"
+      raise "Method [#{method}] not defined or allowed" unless method.end_with?("?")
       @roles.include?(method[0..-2].upcase)
     end
 
-    def respond_to_missing?(method, include_private = false)
-      true if method[-1] == "?"
-    end
+    def respond_to_missing?(method, include_private = false) = method.end_with?("?")
 
     def full_name
       return nil if last_name.nil? && first_name.nil?
@@ -49,12 +47,15 @@ module Ehsso
       person = Ehsso::Person.new
 
       # reference (mandatory)
-      if header["HTTP_NIBR521"].nil? || header["HTTP_NIBR521"].size == 0
-        person.last_error_message = "Unable to extract HTTP_NIBR* porperties from request header"
+      # to_s save in case of nil,
+      # strip removes spaces around the string
+      reference_value = header["HTTP_NIBR521"].to_s.strip
+      if reference_value.empty?
+        person.last_error_message = "Unable to extract HTTP_NIBR* properties from request header"
         return person
       end
 
-      person.reference = header["HTTP_NIBR521"].downcase
+      person.reference = reference_value.downcase
 
       [
         [:first_name=, "HTTP_NIBRFIRST"],
