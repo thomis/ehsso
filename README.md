@@ -19,12 +19,13 @@ This gem handles the authorization aspect of SSO - determining what an already a
 
 Currently supported and tested ruby versions are:
 
+- 4.0 (EOL 31 Mar 2029)
 - 3.4 (EOL 31 Mar 2028)
 - 3.3 (EOL 31 Mar 2027)
-- 3.2 (EOL 31 Mar 2026)
 
 Ruby versions not tested anymore:
 
+- 3.2 (EOL 31 Mar 2026)
 - 3.1 (EOL 31 Mar 2025)
 
 ## Installation
