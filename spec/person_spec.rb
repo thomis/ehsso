@@ -64,6 +64,18 @@ RSpec.describe Ehsso::Person do
       expect(person.reference).to eq("federro1")
     end
 
+    it "strips spaces around first name, last name and email" do
+      person = Ehsso::Person.parse_from_request_header(
+        "HTTP_NIBR521" => "FEDERRO1",
+        "HTTP_NIBRFIRST" => "  Roger ",
+        "HTTP_NIBRLAST" => " Federer  ",
+        "HTTP_NIBREMAIL" => "  roger.federer@tennis.ch  "
+      )
+      expect(person.first_name).to eq("Roger")
+      expect(person.last_name).to eq("Federer")
+      expect(person.email).to eq("roger.federer@tennis.ch")
+    end
+
     it "creates a person with reference only" do
       person = Ehsso::Person.parse_from_request_header("HTTP_NIBR521" => "FEDERRO1")
       expect(person).not_to be(nil)

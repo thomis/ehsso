@@ -1,5 +1,12 @@
 # Changelog of ehsso
 
+## 0.8.0 / 2026-06-10
+
+* Strip whitespace from HTTP_NIBR* header values (reference, first name, last name, email)
+* Reject whitespace-only reference header as invalid
+* Use end_with? for role method checking in method_missing and respond_to_missing?
+* Fix typo in error message ("porperties" -> "properties")
+
 ## 0.7.1 / 2025-11-09
 
 * Enable Trusted Publishing

@@ -62,7 +62,8 @@ module Ehsso
         [:last_name=, "HTTP_NIBRLAST"],
         [:email=, "HTTP_NIBREMAIL"]
       ].each do |method, key|
-        person.send(method, header[key]) if header[key] && header[key].strip.size > 0
+        value = header[key].to_s.strip
+        person.send(method, value) unless value.empty?
       end
 
       person
