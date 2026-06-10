@@ -39,13 +39,41 @@ RSpec.describe Ehsso::Person do
     it "failes to create a valid person with wrong header type" do
       person = Ehsso::Person.parse_from_request_header("dfasf")
       expect(person.valid?).to eq(false)
-      expect(person.last_error_message).to eq("Unable to extract HTTP_NIBR* porperties from request header")
+      expect(person.last_error_message).to eq("Unable to extract HTTP_NIBR* properties from request header")
     end
 
     it "fails to create a person with empty headers" do
       person = Ehsso::Person.parse_from_request_header({})
       expect(person.valid?).to eq(false)
-      expect(person.last_error_message).to eq("Unable to extract HTTP_NIBR* porperties from request header")
+      expect(person.last_error_message).to eq("Unable to extract HTTP_NIBR* properties from request header")
+    end
+
+    it "fails to create a person if reference contains only spaces" do
+      person = Ehsso::Person.parse_from_request_header(
+        "HTTP_NIBR521" => "   ",
+        "HTTP_NIBRFIRST" => nil,
+        "HTTP_NIBREMAIL" => nil
+      )
+      expect(person.valid?).to be_falsy
+      expect(person.last_error_message).to eq("Unable to extract HTTP_NIBR* properties from request header")
+    end
+
+    it "create a person correctly if reference contains spaces" do
+      person = Ehsso::Person.parse_from_request_header("HTTP_NIBR521" => "      FEDERRO1     ")
+      expect(person.id).to be_nil
+      expect(person.reference).to eq("federro1")
+    end
+
+    it "strips spaces around first name, last name and email" do
+      person = Ehsso::Person.parse_from_request_header(
+        "HTTP_NIBR521" => "FEDERRO1",
+        "HTTP_NIBRFIRST" => "  Roger ",
+        "HTTP_NIBRLAST" => " Federer  ",
+        "HTTP_NIBREMAIL" => "  roger.federer@tennis.ch  "
+      )
+      expect(person.first_name).to eq("Roger")
+      expect(person.last_name).to eq("Federer")
+      expect(person.email).to eq("roger.federer@tennis.ch")
     end
 
     it "creates a person with reference only" do
