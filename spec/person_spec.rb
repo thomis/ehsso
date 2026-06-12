@@ -2,7 +2,7 @@ require "spec_helper"
 require "yaml"
 
 RSpec.describe Ehsso::Person do
-  it "is creates a user without role" do
+  it "creates a user without role" do
     person = described_class.new(id: 0, reference: "123", first_name: "first_name", last_name: "last_name", email: "first_name.last_name@company.tld")
 
     expect(person.id).to eq(0)
@@ -14,7 +14,7 @@ RSpec.describe Ehsso::Person do
     expect(person.roles).to be_empty
   end
 
-  it "is creates a user with role" do
+  it "creates a user with role" do
     person = described_class.new(
       id: 0,
       reference: "123",
@@ -263,32 +263,32 @@ RSpec.describe Ehsso::Person do
     end
   end
 
-  describe '#full_name' do
+  describe "#full_name" do
     subject(:full_name) { person.full_name }
 
-    context 'when first_name and last_name present' do
-      let(:person) {described_class.new(first_name: ' Roger ', last_name: ' Federer ')}
-      it {is_expected.to eq('Federer Roger')}
+    context "when first_name and last_name present" do
+      let(:person) { described_class.new(first_name: " Roger ", last_name: " Federer ") }
+      it { is_expected.to eq("Federer Roger") }
     end
 
-    context 'when first_name presents' do
-      let(:person) {described_class.new(first_name: ' Roger ', last_name: nil )}
-      it {is_expected.to eq('Roger')}
+    context "when first_name presents" do
+      let(:person) { described_class.new(first_name: " Roger ", last_name: nil) }
+      it { is_expected.to eq("Roger") }
     end
 
-    context 'when first_name contains only whitespaces' do
-      let(:person) {described_class.new(first_name: '  ', last_name: 'Federer' )}
-      it {is_expected.to eq('Federer')}
+    context "when first_name contains only whitespaces" do
+      let(:person) { described_class.new(first_name: "  ", last_name: "Federer") }
+      it { is_expected.to eq("Federer") }
     end
 
-    context 'when empty' do
-      let(:person) {described_class.new(first_name: nil, last_name: nil )}
-      it {is_expected.to be_nil}
+    context "when empty" do
+      let(:person) { described_class.new(first_name: nil, last_name: nil) }
+      it { is_expected.to be_nil }
     end
 
-    context 'when empty strings' do
-      let(:person) {described_class.new(first_name: '', last_name: '' )}
-      it {is_expected.to be_nil}
+    context "when empty strings" do
+      let(:person) { described_class.new(first_name: "", last_name: "") }
+      it { is_expected.to be_nil }
     end
   end
 end

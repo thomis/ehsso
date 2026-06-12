@@ -38,7 +38,7 @@ module Ehsso
 
     def full_name
       name = [last_name, first_name].compact.map(&:strip).reject(&:empty?)
-      name.empty? ? nil : name.join(' ')
+      name.empty? ? nil : name.join(" ")
     end
 
     def self.parse_from_request_header(header = {})
