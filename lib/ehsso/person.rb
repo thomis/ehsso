@@ -2,16 +2,8 @@ require "typhoeus"
 
 module Ehsso
   class Person
-    attr_accessor :id
-    attr_accessor :reference
-    attr_accessor :first_name
-    attr_accessor :last_name
-    attr_accessor :email
-    attr_accessor :module_key
-    attr_accessor :module_name
-    attr_accessor :roles
-
-    attr_accessor :last_error_message
+    attr_accessor :id, :reference, :first_name, :last_name, :email,
+      :module_key, :module_name, :roles, :last_error_message
 
     def initialize(args = {})
       @id = args[:id]
@@ -23,8 +15,14 @@ module Ehsso
       # for this purpose we deal with only one module
       @module_key = args[:module_key]
       @module_name = args[:module_name]
-      @roles = args[:roles].is_a?(Array) ? args[:roles] : []
+      @roles = Array(args[:roles])
     end
+
+    HEADER_MAPPING = [
+      [:first_name=, "HTTP_NIBRFIRST"],
+      [:last_name=, "HTTP_NIBRLAST"],
+      [:email=, "HTTP_NIBREMAIL"]
+    ].freeze
 
     def valid?
       @last_error_message.nil?
@@ -39,8 +37,8 @@ module Ehsso
     def respond_to_missing?(method, include_private = false) = method.end_with?("?")
 
     def full_name
-      return nil if last_name.nil? && first_name.nil?
-      [last_name, first_name].compact.join(" ")
+      name = [last_name, first_name].compact.map(&:strip).reject(&:empty?)
+      name.empty? ? nil : name.join(" ")
     end
 
     def self.parse_from_request_header(header = {})
@@ -57,11 +55,7 @@ module Ehsso
 
       person.reference = reference_value.downcase
 
-      [
-        [:first_name=, "HTTP_NIBRFIRST"],
-        [:last_name=, "HTTP_NIBRLAST"],
-        [:email=, "HTTP_NIBREMAIL"]
-      ].each do |method, key|
+      HEADER_MAPPING.each do |method, key|
         value = header[key].to_s.strip
         person.send(method, value) unless value.empty?
       end
